@@ -1,0 +1,69 @@
+name: Test
+permissions:
+  contents: read
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.platform }}
+    steps:
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v6
+    - name: Install Go
+      uses: actions/setup-go@v6
+      with:
+        go-version: ${{ matrix.go-version }}
+    - name: Run tests
+      run: make test
+    strategy:
+      matrix:
+        go-version:
+        - "oldstable"
+        - "stable"
+        platform:
+        - ubuntu-latest
+        - macos-latest
+        - windows-latest
+  dbtest:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        env:
+          MYSQL_DATABASE: trdsql_test
+          MYSQL_ROOT_PASSWORD: root
+        image: mysql:latest
+        ports:
+        - 3307:3306
+      postgres:
+        env:
+          POSTGRES_DB: trdsql_test
+          POSTGRES_INITDB_ARGS: --encoding=UTF-8 --locale=C
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        image: postgres:latest
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s
+          --health-retries 5
+        ports:
+        - 5432:5432
+    steps:
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v6
+    - name: Install Go
+      uses: actions/setup-go@v6
+      with:
+        go-version-file: go.mod
+    - env:
+        SESSION_MY_TEST_DSN: root:root@tcp(localhost:3307)/trdsql_test
+        SESSION_PG_TEST_DSN: host=localhost user=postgres password=postgres dbname=trdsql_test
+          sslmode=disable
+      name: Run tests
+      run: make test
+    - name: Update coverage report
+      uses: ncruces/go-coverage-report@v0
+      if: github.event_name == 'push'
+      continue-on-error: true

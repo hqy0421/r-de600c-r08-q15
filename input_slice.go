@@ -1,0 +1,222 @@
+package trdsql
+
+import (
+	"fmt"
+	"io"
+	"reflect"
+)
+
+// SliceReader reads tabular data in memory.
+// It can be used as a trdsql Reader.
+type SliceReader struct {
+	tableName string
+	names     []string
+	types     []string
+	data      [][]any
+}
+
+// NewSliceReader takes tableName and in-memory tabular data,
+// and returns a SliceReader.
+// Supported data types are a one-dimensional array,
+// a two-dimensional array, a map,
+// and an array of structures.
+func NewSliceReader(tableName string, args any) *SliceReader {
+	val := reflect.ValueOf(args)
+	if val.Kind() == reflect.Pointer {
+		val = reflect.Indirect(val)
+	}
+
+	// One-dimensional
+	switch val.Kind() {
+	case reflect.Map:
+		return mapReader(tableName, val)
+	case reflect.Struct:
+		return structReader(tableName, val)
+	case reflect.Slice:
+		return sliceReader(tableName, val)
+	default:
+		single := val.Interface()
+		data := [][]any{
+			{single},
+		}
+		names := []string{"c1"}
+		types := []string{typeToDBType(val.Kind())}
+		return &SliceReader{
+			tableName: tableName,
+			names:     names,
+			types:     types,
+			data:      data,
+		}
+	}
+}
+
+func mapReader(tableName string, val reflect.Value) *SliceReader {
+	val = reflect.Indirect(val)
+	names := []string{"c1", "c2"}
+	keyType := val.MapKeys()[0].Kind()
+	valType := val.MapIndex(val.MapKeys()[0]).Kind()
+	types := []string{typeToDBType(keyType), typeToDBType(valType)}
+	data := make([][]any, 0)
+	for _, e := range val.MapKeys() {
+		data = append(data, []any{e.Interface(), val.MapIndex(e).Interface()})
+	}
+	return &SliceReader{
+		tableName: tableName,
+		names:     names,
+		types:     types,
+		data:      data,
+	}
+}
+
+func structReader(tableName string, val reflect.Value) *SliceReader {
+	t := val.Type()
+	columnNum := t.NumField()
+	names := make([]string, columnNum)
+	types := make([]string, columnNum)
+	for i := range columnNum {
+		f := t.Field(i)
+		names[i] = f.Name
+		types[i] = typeToDBType(f.Type.Kind())
+	}
+	single := make([]any, t.NumField())
+	for j := 0; j < t.NumField(); j++ {
+		single[j] = fmt.Sprintf("%v", val.Field(j))
+	}
+	data := [][]any{
+		single,
+	}
+
+	return &SliceReader{
+		tableName: tableName,
+		names:     names,
+		types:     types,
+		data:      data,
+	}
+}
+
+func sliceReader(tableName string, val reflect.Value) *SliceReader {
+	if val.Len() == 0 {
+		return &SliceReader{
+			tableName: tableName,
+			names:     []string{"c1"},
+			types:     []string{"text"},
+			data:      nil,
+		}
+	}
+	switch val.Index(0).Kind() {
+	case reflect.Struct:
+		// {{ id: 1, name: "test"},{ id: 2, name: "test2"}}
+		return structSliceReader(tableName, val)
+	case reflect.Slice:
+		// {{1, "test"},{2, "test2"}}
+		return sliceSliceReader(tableName, val)
+	default:
+		// {{"a", "b", "c"}}
+		return interfaceSliceReader(tableName, val)
+	}
+}
+
+func structSliceReader(tableName string, val reflect.Value) *SliceReader {
+	length := val.Len()
+	t := val.Index(0).Type()
+	columnNum := t.NumField()
+	names := make([]string, columnNum)
+	types := make([]string, columnNum)
+	for i := range columnNum {
+		f := t.Field(i)
+		names[i] = f.Name
+		types[i] = typeToDBType(f.Type.Kind())
+	}
+	data := make([][]any, 0)
+	for i := range length {
+		rows := val.Index(i)
+		r := make([]any, rows.NumField())
+		for j := 0; j < rows.NumField(); j++ {
+			r[j] = fmt.Sprintf("%v", rows.Field(j))
+		}
+		data = append(data, r)
+	}
+	return &SliceReader{
+		tableName: tableName,
+		names:     names,
+		types:     types,
+		data:      data,
+	}
+}
+
+func sliceSliceReader(tableName string, val reflect.Value) *SliceReader {
+	length := val.Len()
+	col := val.Index(0)
+	columnNum := col.Len()
+	names := make([]string, columnNum)
+	types := make([]string, columnNum)
+	for i := range columnNum {
+		names[i] = fmt.Sprintf("c%d", i+1)
+		colType := reflect.ValueOf(col.Index(i).Interface()).Kind()
+		types[i] = typeToDBType(colType)
+	}
+
+	data := make([][]any, 0)
+	for i := range length {
+		data = append(data, val.Index(i).Interface().([]any))
+	}
+	return &SliceReader{
+		tableName: tableName,
+		names:     names,
+		types:     types,
+		data:      data,
+	}
+}
+
+func interfaceSliceReader(tableName string, val reflect.Value) *SliceReader {
+	v := val.Index(0).Interface()
+	length := val.Len()
+	t := reflect.ValueOf(v)
+	names := []string{"c1"}
+	types := []string{typeToDBType(t.Kind())}
+	data := make([][]any, length)
+	for i := range length {
+		data[i] = []any{val.Index(i).Interface()}
+	}
+	return &SliceReader{
+		tableName: tableName,
+		names:     names,
+		types:     types,
+		data:      data,
+	}
+}
+
+// In sliceReader, only int types are passed to the database as int.
+func typeToDBType(t reflect.Kind) string {
+	switch t {
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		return "int"
+	default:
+		return DefaultDBType
+	}
+}
+
+// TableName returns the table name.
+func (r *SliceReader) TableName() (string, error) {
+	return r.tableName, nil
+}
+
+// Names returns column names.
+func (r *SliceReader) Names() ([]string, error) {
+	return r.names, nil
+}
+
+// Types returns column types.
+func (r *SliceReader) Types() ([]string, error) {
+	return r.types, nil
+}
+
+// PreReadRow returns all pre-read rows.
+func (r *SliceReader) PreReadRow() [][]any {
+	return r.data
+}
+
+// ReadRow always returns io.EOF.
+func (r *SliceReader) ReadRow(row []any) ([]any, error) {
+	return nil, io.EOF
+}

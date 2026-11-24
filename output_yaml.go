@@ -1,0 +1,75 @@
+package trdsql
+
+import (
+	"encoding/hex"
+	"unicode/utf8"
+
+	"github.com/goccy/go-yaml"
+)
+
+// YAMLWriter writes result rows as a YAML sequence of objects.
+type YAMLWriter struct {
+	writer   *yaml.Encoder
+	outNULL  string
+	results  []yaml.MapSlice
+	needNULL bool
+}
+
+// NewYAMLWriter returns a YAMLWriter configured with output options.
+func NewYAMLWriter(writeOpts *WriteOpts) *YAMLWriter {
+	w := &YAMLWriter{}
+	w.writer = yaml.NewEncoder(writeOpts.OutStream)
+	w.needNULL = writeOpts.OutNeedNULL
+	w.outNULL = writeOpts.OutNULL
+	return w
+}
+
+// PreWrite initializes buffers for output.
+func (w *YAMLWriter) PreWrite(columns []string, types []string) error {
+	w.results = make([]yaml.MapSlice, 0)
+	return nil
+}
+
+// WriteRow appends one row to the output buffer.
+func (w *YAMLWriter) WriteRow(values []any, columns []string) error {
+	m := make(yaml.MapSlice, len(values))
+	for i, col := range values {
+		m[i].Key = columns[i]
+		m[i].Value = compatibleYAML(col, w.needNULL, w.outNULL)
+	}
+	w.results = append(w.results, m)
+	return nil
+}
+
+// CompatibleYAML converts the value to a YAML-compatible value.
+func compatibleYAML(v any, needNULL bool, outNULL string) any {
+	var yl any
+	switch t := v.(type) {
+	case []byte:
+		if err := yaml.Unmarshal(t, &yl); err == nil {
+			return yl
+		}
+		if ok := utf8.Valid(t); ok {
+			return string(t)
+		}
+		return `\x` + hex.EncodeToString(t)
+	case string:
+		y := []byte(t)
+		if err := yaml.Unmarshal(y, &yl); err == nil {
+			return yl
+		}
+		return v
+	case nil:
+		if needNULL {
+			return outNULL
+		}
+		return nil
+	default:
+		return v
+	}
+}
+
+// PostWrite writes buffered rows as YAML.
+func (w *YAMLWriter) PostWrite() error {
+	return w.writer.Encode(w.results)
+}

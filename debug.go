@@ -1,0 +1,26 @@
+package trdsql
+
+import "log"
+
+// debugT is a type of debug flag.
+type debugT bool
+
+// debug is a flag for detailed output.
+var debug = debugT(false)
+
+// EnableDebug enables verbose debug output.
+func EnableDebug() {
+	debug = true
+}
+
+func (d debugT) Printf(format string, args ...any) {
+	if d {
+		log.Printf(format, args...)
+	}
+}
+
+func (d debugT) Print(args ...any) {
+	if d {
+		log.Print(args...)
+	}
+}

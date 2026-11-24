@@ -1,0 +1,61 @@
+package trdsql
+
+import (
+	"bufio"
+)
+
+// LTSVWriter writes rows as LTSV (tab-separated key:value pairs).
+type LTSVWriter struct {
+	writer    *bufio.Writer
+	outNULL   string
+	results   []string
+	delimiter rune
+	needNULL  bool
+}
+
+// NewLTSVWriter returns an LTSVWriter configured with output options.
+func NewLTSVWriter(writeOpts *WriteOpts) *LTSVWriter {
+	w := &LTSVWriter{}
+	w.delimiter = '\t'
+	w.writer = bufio.NewWriter(writeOpts.OutStream)
+	w.needNULL = writeOpts.OutNeedNULL
+	w.outNULL = writeOpts.OutNULL
+	return w
+}
+
+// PreWrite initializes buffers for output.
+func (w *LTSVWriter) PreWrite(columns []string, types []string) error {
+	w.results = make([]string, len(columns))
+	return nil
+}
+
+// WriteRow writes one row in LTSV format.
+func (w *LTSVWriter) WriteRow(values []any, labels []string) error {
+	for n, col := range values {
+		if n > 0 {
+			if _, err := w.writer.WriteRune(w.delimiter); err != nil {
+				return err
+			}
+		}
+		if _, err := w.writer.WriteString(labels[n]); err != nil {
+			return err
+		}
+		if err := w.writer.WriteByte(':'); err != nil {
+			return err
+		}
+
+		str := ValString(col)
+		if col == nil && w.needNULL {
+			str = w.outNULL
+		}
+		if _, err := w.writer.WriteString(str); err != nil {
+			return err
+		}
+	}
+	return w.writer.WriteByte('\n')
+}
+
+// PostWrite flushes the buffered output.
+func (w *LTSVWriter) PostWrite() error {
+	return w.writer.Flush()
+}

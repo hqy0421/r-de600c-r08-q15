@@ -1,0 +1,148 @@
+package trdsql
+
+import (
+	"context"
+	"database/sql"
+	"log"
+	"strings"
+
+	"github.com/noborus/sqlss"
+)
+
+// Exporter is the interface for processing query results.
+// Exporter executes SQL and outputs to Writer.
+type Exporter interface {
+	Export(db *DB, sql string) error
+	ExportContext(ctx context.Context, db *DB, sql string) error
+}
+
+// WriteFormat implements the Exporter interface.
+type WriteFormat struct {
+	Writer
+	columns []string
+	types   []string
+	multi   bool
+}
+
+// NewExporter returns the default Exporter.
+func NewExporter(writer Writer) *WriteFormat {
+	return &WriteFormat{
+		Writer: writer,
+		multi:  false,
+	}
+}
+
+// Export executes SQL (SELECT) and writes the result with the Writer.
+// Export is called from Exec.
+func (e *WriteFormat) Export(db *DB, sql string) error {
+	ctx := context.Background()
+	return e.ExportContext(ctx, db, sql)
+}
+
+// ExportContext executes SQL (SELECT) and writes the result with the Writer.
+// ExportContext is called from ExecContext.
+func (e *WriteFormat) ExportContext(ctx context.Context, db *DB, sqlQuery string) error {
+	queries := sqlss.SplitQueries(sqlQuery)
+	if !multi || len(queries) == 1 {
+		return e.exportContext(ctx, db, sqlQuery)
+	}
+
+	e.multi = true
+	for _, query := range queries {
+		if err := e.exportContext(ctx, db, query); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (e *WriteFormat) exportContext(ctx context.Context, db *DB, query string) error {
+	if db.Tx == nil {
+		return ErrNoTransaction
+	}
+
+	query = strings.TrimSpace(query)
+	if query == "" {
+		return ErrNoStatement
+	}
+	debug.Print(query)
+
+	if db.isExecContext(query) {
+		return db.OtherExecContext(ctx, query)
+	}
+
+	rows, err := db.SelectContext(ctx, query)
+	if err != nil {
+		return err
+	}
+
+	columns, err := rows.Columns()
+	if err != nil {
+		return err
+	}
+	e.columns = columns
+
+	defer func() {
+		if err = rows.Close(); err != nil {
+			log.Printf("ERROR: close:%s", err)
+		}
+	}()
+
+	// No data is not output for multiple queries.
+	if e.multi && len(e.columns) == 0 {
+		return nil
+	}
+
+	columnTypes, err := rows.ColumnTypes()
+	if err != nil {
+		return err
+	}
+	types := make([]string, len(columns))
+	for i, ct := range columnTypes {
+		types[i] = ct.DatabaseTypeName()
+	}
+	e.types = types
+
+	return e.write(ctx, rows)
+}
+
+func (e *WriteFormat) write(ctx context.Context, rows *sql.Rows) error {
+	values := make([]any, len(e.columns))
+	scanArgs := make([]any, len(e.columns))
+	for i := range values {
+		scanArgs[i] = &values[i]
+	}
+
+	if err := e.Writer.PreWrite(e.columns, e.types); err != nil {
+		return err
+	}
+
+	for rows.Next() {
+		select {
+		case <-ctx.Done(): // cancellation
+			return ctx.Err()
+		default:
+		}
+
+		if err := rows.Scan(scanArgs...); err != nil {
+			return err
+		}
+		if err := e.Writer.WriteRow(values, e.columns); err != nil {
+			return err
+		}
+	}
+	if err := rows.Err(); err != nil {
+		return err
+	}
+
+	return e.Writer.PostWrite()
+}
+
+// isExecContext returns true if the query is not a SELECT statement.
+// Queries that return no rows in SQlite should use ExecContext and therefore return true.
+func (db *DB) isExecContext(query string) bool {
+	if db.driver == "sqlite3" || db.driver == "sqlite" {
+		return !strings.HasPrefix(strings.ToUpper(query), "SELECT")
+	}
+	return false
+}
