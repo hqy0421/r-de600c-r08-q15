@@ -1,0 +1,2 @@
+{"num":1,"ts":"2026-11-24T09:00:00Z","meter_id":"M01","reading_id":"R00000","kwh":"0.25","quality":"FLAG"}
+{"num":4,"ts":"2026-11-24T09:00:00Z","meter_id":"M03","reading_id":"R00006","kwh":"4.75","quality":"OK"}

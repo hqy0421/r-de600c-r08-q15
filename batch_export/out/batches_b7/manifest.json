@@ -1,0 +1,63 @@
+{
+  "snapshot": "/workspace/batch_export/snapshot/instrument.jsonl",
+  "snapshot_sha256": "187247f2a374f49b5f8e94f0da43370719c8ce4b4c05fabc0fec940b2d1b8489",
+  "batch_size": 7,
+  "columns": [
+    "num",
+    "ts",
+    "meter_id",
+    "reading_id",
+    "kwh",
+    "quality"
+  ],
+  "order": [
+    "ts",
+    "num"
+  ],
+  "total_rows": 37,
+  "batch_count": 6,
+  "batches": [
+    {
+      "index": 1,
+      "file": "batch_00001.jsonl",
+      "rows": 7,
+      "cursor_in": null,
+      "cursor_out": "eyJudW0iOjE5LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MDA6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 2,
+      "file": "batch_00002.jsonl",
+      "rows": 7,
+      "cursor_in": "eyJudW0iOjE5LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MDA6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjIsInRzIjoiMjAyNi0xMS0yNFQwOToxMDowMFoiLCJ2IjoxfQ"
+    },
+    {
+      "index": 3,
+      "file": "batch_00003.jsonl",
+      "rows": 7,
+      "cursor_in": "eyJudW0iOjIsInRzIjoiMjAyNi0xMS0yNFQwOToxMDowMFoiLCJ2IjoxfQ",
+      "cursor_out": "eyJudW0iOjI0LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MTU6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 4,
+      "file": "batch_00004.jsonl",
+      "rows": 7,
+      "cursor_in": "eyJudW0iOjI0LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MTU6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjksInRzIjoiMjAyNi0xMS0yNFQwOToyMDowMFoiLCJ2IjoxfQ"
+    },
+    {
+      "index": 5,
+      "file": "batch_00005.jsonl",
+      "rows": 7,
+      "cursor_in": "eyJudW0iOjksInRzIjoiMjAyNi0xMS0yNFQwOToyMDowMFoiLCJ2IjoxfQ",
+      "cursor_out": "eyJudW0iOjMxLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjU6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 6,
+      "file": "batch_00006.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjMxLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjU6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjM3LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjU6MDBaIiwidiI6MX0"
+    }
+  ]
+}

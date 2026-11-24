@@ -1,0 +1,77 @@
+{
+  "snapshot": "/workspace/batch_export/snapshot/instrument.jsonl",
+  "snapshot_sha256": "187247f2a374f49b5f8e94f0da43370719c8ce4b4c05fabc0fec940b2d1b8489",
+  "batch_size": 5,
+  "columns": [
+    "num",
+    "ts",
+    "meter_id",
+    "reading_id",
+    "kwh",
+    "quality"
+  ],
+  "order": [
+    "ts",
+    "num"
+  ],
+  "total_rows": 37,
+  "batch_count": 8,
+  "batches": [
+    {
+      "index": 1,
+      "file": "batch_00001.jsonl",
+      "rows": 5,
+      "cursor_in": null,
+      "cursor_out": "eyJudW0iOjEzLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MDA6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 2,
+      "file": "batch_00002.jsonl",
+      "rows": 5,
+      "cursor_in": "eyJudW0iOjEzLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MDA6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjI2LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MDU6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 3,
+      "file": "batch_00003.jsonl",
+      "rows": 5,
+      "cursor_in": "eyJudW0iOjI2LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MDU6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjUsInRzIjoiMjAyNi0xMS0yNFQwOToxMDowMFoiLCJ2IjoxfQ"
+    },
+    {
+      "index": 4,
+      "file": "batch_00004.jsonl",
+      "rows": 5,
+      "cursor_in": "eyJudW0iOjUsInRzIjoiMjAyNi0xMS0yNFQwOToxMDowMFoiLCJ2IjoxfQ",
+      "cursor_out": "eyJudW0iOjIxLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MTU6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 5,
+      "file": "batch_00005.jsonl",
+      "rows": 5,
+      "cursor_in": "eyJudW0iOjIxLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MTU6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjM2LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MTU6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 6,
+      "file": "batch_00006.jsonl",
+      "rows": 5,
+      "cursor_in": "eyJudW0iOjM2LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MTU6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjE1LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjA6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 7,
+      "file": "batch_00007.jsonl",
+      "rows": 5,
+      "cursor_in": "eyJudW0iOjE1LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjA6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjMxLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjU6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 8,
+      "file": "batch_00008.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjMxLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjU6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjM3LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjU6MDBaIiwidiI6MX0"
+    }
+  ]
+}

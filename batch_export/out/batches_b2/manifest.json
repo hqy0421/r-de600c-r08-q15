@@ -1,0 +1,154 @@
+{
+  "snapshot": "/workspace/batch_export/snapshot/instrument.jsonl",
+  "snapshot_sha256": "187247f2a374f49b5f8e94f0da43370719c8ce4b4c05fabc0fec940b2d1b8489",
+  "batch_size": 2,
+  "columns": [
+    "num",
+    "ts",
+    "meter_id",
+    "reading_id",
+    "kwh",
+    "quality"
+  ],
+  "order": [
+    "ts",
+    "num"
+  ],
+  "total_rows": 37,
+  "batch_count": 19,
+  "batches": [
+    {
+      "index": 1,
+      "file": "batch_00001.jsonl",
+      "rows": 2,
+      "cursor_in": null,
+      "cursor_out": "eyJudW0iOjQsInRzIjoiMjAyNi0xMS0yNFQwOTowMDowMFoiLCJ2IjoxfQ"
+    },
+    {
+      "index": 2,
+      "file": "batch_00002.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjQsInRzIjoiMjAyNi0xMS0yNFQwOTowMDowMFoiLCJ2IjoxfQ",
+      "cursor_out": "eyJudW0iOjEwLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MDA6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 3,
+      "file": "batch_00003.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjEwLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MDA6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjE2LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MDA6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 4,
+      "file": "batch_00004.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjE2LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MDA6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjIwLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MDU6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 5,
+      "file": "batch_00005.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjIwLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MDU6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjI2LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MDU6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 6,
+      "file": "batch_00006.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjI2LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MDU6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjMyLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MDU6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 7,
+      "file": "batch_00007.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjMyLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MDU6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjIsInRzIjoiMjAyNi0xMS0yNFQwOToxMDowMFoiLCJ2IjoxfQ"
+    },
+    {
+      "index": 8,
+      "file": "batch_00008.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjIsInRzIjoiMjAyNi0xMS0yNFQwOToxMDowMFoiLCJ2IjoxfQ",
+      "cursor_out": "eyJudW0iOjgsInRzIjoiMjAyNi0xMS0yNFQwOToxMDowMFoiLCJ2IjoxfQ"
+    },
+    {
+      "index": 9,
+      "file": "batch_00009.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjgsInRzIjoiMjAyNi0xMS0yNFQwOToxMDowMFoiLCJ2IjoxfQ",
+      "cursor_out": "eyJudW0iOjE0LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MTA6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 10,
+      "file": "batch_00010.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjE0LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MTA6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjIxLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MTU6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 11,
+      "file": "batch_00011.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjIxLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MTU6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjI3LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MTU6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 12,
+      "file": "batch_00012.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjI3LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MTU6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjMzLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MTU6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 13,
+      "file": "batch_00013.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjMzLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MTU6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjMsInRzIjoiMjAyNi0xMS0yNFQwOToyMDowMFoiLCJ2IjoxfQ"
+    },
+    {
+      "index": 14,
+      "file": "batch_00014.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjMsInRzIjoiMjAyNi0xMS0yNFQwOToyMDowMFoiLCJ2IjoxfQ",
+      "cursor_out": "eyJudW0iOjksInRzIjoiMjAyNi0xMS0yNFQwOToyMDowMFoiLCJ2IjoxfQ"
+    },
+    {
+      "index": 15,
+      "file": "batch_00015.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjksInRzIjoiMjAyNi0xMS0yNFQwOToyMDowMFoiLCJ2IjoxfQ",
+      "cursor_out": "eyJudW0iOjE1LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjA6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 16,
+      "file": "batch_00016.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjE1LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjA6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjIyLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjU6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 17,
+      "file": "batch_00017.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjIyLCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjU6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjI4LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjU6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 18,
+      "file": "batch_00018.jsonl",
+      "rows": 2,
+      "cursor_in": "eyJudW0iOjI4LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjU6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjM0LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjU6MDBaIiwidiI6MX0"
+    },
+    {
+      "index": 19,
+      "file": "batch_00019.jsonl",
+      "rows": 1,
+      "cursor_in": "eyJudW0iOjM0LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjU6MDBaIiwidiI6MX0",
+      "cursor_out": "eyJudW0iOjM3LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjU6MDBaIiwidiI6MX0"
+    }
+  ]
+}

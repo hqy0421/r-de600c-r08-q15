@@ -1,0 +1,7 @@
+{"num":1,"ts":"2026-11-24T09:00:00Z","meter_id":"M01","reading_id":"R00000","kwh":"0.25","quality":"FLAG"}
+{"num":4,"ts":"2026-11-24T09:00:00Z","meter_id":"M03","reading_id":"R00006","kwh":"4.75","quality":"OK"}
+{"num":7,"ts":"2026-11-24T09:00:00Z","meter_id":"M01","reading_id":"R00012","kwh":"9.25","quality":"OK"}
+{"num":10,"ts":"2026-11-24T09:00:00Z","meter_id":"M03","reading_id":"R00018","kwh":"13.75","quality":"OK"}
+{"num":13,"ts":"2026-11-24T09:00:00Z","meter_id":"M01","reading_id":"R00024","kwh":"18.25","quality":"OK"}
+{"num":16,"ts":"2026-11-24T09:00:00Z","meter_id":"M03","reading_id":"R00030","kwh":"3.25","quality":"OK"}
+{"num":19,"ts":"2026-11-24T09:00:00Z","meter_id":"M01","reading_id":"R00036","kwh":"7.75","quality":"OK"}

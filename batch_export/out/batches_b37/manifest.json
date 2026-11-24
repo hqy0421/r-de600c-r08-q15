@@ -1,0 +1,28 @@
+{
+  "snapshot": "/workspace/batch_export/snapshot/instrument.jsonl",
+  "snapshot_sha256": "187247f2a374f49b5f8e94f0da43370719c8ce4b4c05fabc0fec940b2d1b8489",
+  "batch_size": 37,
+  "columns": [
+    "num",
+    "ts",
+    "meter_id",
+    "reading_id",
+    "kwh",
+    "quality"
+  ],
+  "order": [
+    "ts",
+    "num"
+  ],
+  "total_rows": 37,
+  "batch_count": 1,
+  "batches": [
+    {
+      "index": 1,
+      "file": "batch_00001.jsonl",
+      "rows": 37,
+      "cursor_in": null,
+      "cursor_out": "eyJudW0iOjM3LCJ0cyI6IjIwMjYtMTEtMjRUMDk6MjU6MDBaIiwidiI6MX0"
+    }
+  ]
+}
